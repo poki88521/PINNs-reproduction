@@ -3,11 +3,13 @@
 - 复现代码的python环境见requirements.txt
 
 ### 内容总结
+1. Maziar R ,Alireza Y ,Em G K .Hidden fluid mechanics: Learning velocity and pressure fields from flow visualizations.[J].Science (New York, N.Y.),2020,367(6481):1026-1030.DOI:10.1126/science.aaw4741. 
 
 
 ### 日志
 #### 2026-6-18
 - 修改环境，去除之前加入的多余的tensorflow、paddlepaddle等包，环境详见requirements.txt
+- 开始复现第一篇论文
 
 #### 2026-6-20
 - 增加了一个复现代码、笔记、数据与图表的模板
@@ -15,8 +17,12 @@
 - 早停法：检测到损失不下降反而升高时停止训练并立刻回滚到损失最低时的模型参数
 
 #### 2026-6-27
-- 用pytorch从头写还是太费时间了，计划用deepxde进行复现
+- 更改计划，用deepxde进行复现
 
+#### 2026-6-28
+- 搭建全连接部分的网络结构并确认参数数量正确
+- 此处的网络结构和之前跑的网络结构不一样，注意观察一下**之后的结果是否不同**
+- 目前为止几乎还在用pytorch
 
 ### 日记
 #### 2026-6-20
@@ -26,3 +32,9 @@
 - 我决定继续这样重写代码，虽然可能要花很久很久
 - ds怎么ai味突然这么冲了。。。
 - 对于之前考虑过的通过dropout来防止过拟合，实际情况是pinns模型本身就不容易发生过拟合（因为使用的数据集不固定）
+
+#### 2026-6-28
+- pytorch会不了一点。。。用手写识别找回手感
+- 权重归一化大多数都用的dim=0，且新版开始用的是torch.nn.utils.parameterizations.weight_norm()
+- 之前跑的复现论文居然少一个隐藏层？？？
+- 自己写的代码将保持10个隐藏层+2输入输出层
