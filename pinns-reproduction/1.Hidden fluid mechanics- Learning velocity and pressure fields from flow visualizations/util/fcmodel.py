@@ -3,9 +3,9 @@ from torch import nn
 from torch.nn.utils import parametrizations
 import torchinfo
 
-class fc_model(nn.Module):
+class FcModel(nn.Module):
     def __init__(self, dims):
-        super(fc_model, self).__init__()
+        super(FcModel, self).__init__()
         torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.input_layer = nn.Sequential(
             parametrizations.weight_norm(nn.Linear(dims[0], dims[1]), dim=0),
@@ -31,7 +31,7 @@ class fc_model(nn.Module):
 if __name__ == '__main__':
     #t, x, y -> c, u, v, p
     dims = [3] + 11 * [200] + [4]
-    model = fc_model(dims)
+    model = FcModel(dims)
     torchinfo.summary(model, input_size=(1, 3))
 
         
