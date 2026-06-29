@@ -37,20 +37,21 @@ def load_data(path, sample_num):
     #获取抽取时空点的索引index
     index_x, index_t = get_index(t, n, sample_num)
     #loss_c参考点获取
-    t_data_c = t_star[:, index_t][index_x, :].flatten().reshape(-1, 1) # (s * t) * 1
-    x_data_c = x_star[:, index_x][index_t, :].flatten().reshape(-1, 1)
-    y_data_c = y_star[:, index_x][index_t, :].flatten().reshape(-1, 1)
-    c_ref = c_star[:, index_x][index_t, :].flatten().reshape(-1, 1)
-    data_c = torch.FloatTensor(np.concatenate([t_data_c, x_data_c, y_data_c, c_ref])) #(s * t) * 4
+    t_data_c = t_star[index_x, :][:, index_t].flatten().reshape(-1, 1) # (s * t) * 1
+    x_data_c = x_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
+    y_data_c = y_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
+    c_ref = c_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
+    data_c = torch.FloatTensor(np.concatenate([t_data_c, x_data_c, y_data_c])) #(s * t) * 3
+    c_ref = torch.FloatTensor(c_ref) #(s * t) * 1
 
     #loss_e参考点获取
     index_x, index_t = get_index(t, n, sample_num) #重新抽取确保两个loss的采样点几乎不重合
-    t_data_e = t_star[:, index_t][index_x, :].flatten().reshape(-1, 1) # (s * t) * 1
-    x_data_e = x_star[:, index_x][index_t, :].flatten().reshape(-1, 1)
-    y_data_e = y_star[:, index_x][index_t, :].flatten().reshape(-1, 1)
+    t_data_e = t_star[index_x, :][:, index_t].flatten().reshape(-1, 1) # (s * t) * 1
+    x_data_e = x_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
+    y_data_e = y_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
     data_e = torch.FloatTensor(np.concatenate([t_data_e, x_data_e, y_data_e])) # (s * t) * 3
 
-    return data_c, data_e, c_star, u_star, v_star, p_star, t_star, x_star, y_star
+    return data_c, c_ref, data_e, c_star, u_star, v_star, p_star, t_star, x_star, y_star
 
 
 
