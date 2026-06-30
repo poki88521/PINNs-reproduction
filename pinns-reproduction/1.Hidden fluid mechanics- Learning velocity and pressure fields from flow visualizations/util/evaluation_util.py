@@ -16,6 +16,10 @@ def test_data(c_star, u_star, v_star, p_star, t_star, x_star, y_star):
     return variable_star, target_star
 
 def relative_l2_error(pred, target):
-    return torch.sqrt(torch.mean((pred - target)**2)/torch.mean((target - torch.mean(target))**2)).cpu().numpy()
+    #要进行中心化操作
+    pred_mean = torch.mean(pred)
+    target_mean = torch.mean(target)
+    return torch.sqrt(torch.mean((pred_mean - target_mean)**2)
+                      / torch.mean(target_mean**2)).cpu().numpy()
 
 

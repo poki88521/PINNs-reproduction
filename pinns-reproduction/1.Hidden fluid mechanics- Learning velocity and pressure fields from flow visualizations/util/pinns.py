@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-def derivative(x, y):
+def derivative(y, x):
     return torch.autograd.grad(y, x, torch.ones_like(y), create_graph=True)[0]
 
 def ns_2d(c, u, v, p, txy, Pe, Re):

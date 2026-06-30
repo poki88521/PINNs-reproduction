@@ -17,10 +17,10 @@ def load_data(path, sample_num):
     data = scipy.io.loadmat(path) #path should include file name
     # star: c, u, v, p, t, x, y
 
-    c_star = data['c_star'] #n * t
-    u_star = data['u_star'] #n * t
-    v_star = data['v_star'] #n * t
-    p_star = data['p_star'] #n * t
+    c_star = data['C_star'] #n * t
+    u_star = data['U_star'] #n * t
+    v_star = data['V_star'] #n * t
+    p_star = data['P_star'] #n * t
 
     t_star = data['t_star'] #t * 1
     x_star = data['x_star'] #n * 1
@@ -41,7 +41,7 @@ def load_data(path, sample_num):
     x_data_c = x_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
     y_data_c = y_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
     c_ref = c_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
-    data_c = torch.FloatTensor(np.concatenate([t_data_c, x_data_c, y_data_c])) #(s * t) * 3
+    data_c = torch.FloatTensor(np.concatenate([t_data_c, x_data_c, y_data_c], axis=1)) #(s * t) * 3
     c_ref = torch.FloatTensor(c_ref) #(s * t) * 1
 
     #loss_e参考点获取
@@ -49,7 +49,7 @@ def load_data(path, sample_num):
     t_data_e = t_star[index_x, :][:, index_t].flatten().reshape(-1, 1) # (s * t) * 1
     x_data_e = x_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
     y_data_e = y_star[index_x, :][:, index_t].flatten().reshape(-1, 1)
-    data_e = torch.FloatTensor(np.concatenate([t_data_e, x_data_e, y_data_e])) # (s * t) * 3
+    data_e = torch.FloatTensor(np.concatenate([t_data_e, x_data_e, y_data_e], axis=1)) # (s * t) * 3
 
     return data_c, c_ref, data_e, c_star, u_star, v_star, p_star, t_star, x_star, y_star
 

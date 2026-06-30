@@ -32,6 +32,7 @@ if __name__ == '__main__':
     log_path = os.path.join(LOG_DIR, "log.csv")
     # args设置
     parser = argparse.ArgumentParser(description='HFM reproduction')
+    parser.add_argument('--version', default='V1.0', type=str, help='version name')
     parser.add_argument('--datapath', default=os.path.join(DATA_DIR, 'Cylinder2D_flower.mat'),
                         type=str, help='data path')
     parser.add_argument('--Re', default=100,
@@ -40,7 +41,7 @@ if __name__ == '__main__':
                         type=int, help='Peclet number')
     parser.add_argument('--num_samples', default=157879,
                         type=int, help='number of samples: N out of 157879')
-    parser.add_argument('--batch_size', default=10000,
+    parser.add_argument('--batch_size', default=5000,
                         type=int, help='batch size')
     parser.add_argument('--lr', default=1e-3,
                         type=float, help='learning rate')
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     data_path = args.datapath
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     layer_list = [3] + 11 * [200] + [4]
-    model = fcmodel.FcModel(layer_list)
+    model = fcmodel.FcModel(layer_list).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     iteration = 0
     batch_size = args.batch_size
