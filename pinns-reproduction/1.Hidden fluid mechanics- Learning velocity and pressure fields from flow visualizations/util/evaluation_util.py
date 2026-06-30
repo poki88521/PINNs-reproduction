@@ -1,8 +1,9 @@
 import numpy as np
 import torch
 
-def test_data(c_star, u_star, v_star, p_star, t_star, x_star, y_star):
-    snap = np.random.randint(0, 200)
+def test_data(c_star, u_star, v_star, p_star, t_star, x_star, y_star, snap=None):
+    if snap is None:
+        snap = np.random.randint(0, 200)
     c_snap = c_star[:, snap: snap + 1] #n * 1
     u_snap = u_star[:, snap: snap + 1]
     v_snap = v_star[:, snap: snap + 1]

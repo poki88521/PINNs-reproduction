@@ -26,10 +26,6 @@ if __name__ == '__main__':
     os.makedirs(DATA_DIR, exist_ok=True)
     os.makedirs(CKPT_DIR, exist_ok=True)
     os.makedirs(LOG_DIR, exist_ok=True)
-    # 存档路径设置
-    best_model_path = os.path.join(CKPT_DIR, "best_model.pth")
-    checkpoint_path = os.path.join(CKPT_DIR, "checkpoint.pth")
-    log_path = os.path.join(LOG_DIR, "log.csv")
     # args设置
     parser = argparse.ArgumentParser(description='HFM reproduction')
     parser.add_argument('--version', default='V1.0', type=str, help='version name')
@@ -48,6 +44,10 @@ if __name__ == '__main__':
     parser.add_argument('--total_iterations', default=200000,
                         type=int, help='total number of iterations')
     args = parser.parse_args()
+    # 存档路径设置
+    best_model_path = os.path.join(CKPT_DIR, f"{args.version}_best_model.pth")
+    checkpoint_path = os.path.join(CKPT_DIR, f"{args.version}_checkpoint.pth")
+    log_path = os.path.join(LOG_DIR, f"{args.version}log.csv")
     #训练参数设置
     data_path = args.datapath
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

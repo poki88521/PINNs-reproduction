@@ -13,7 +13,7 @@ def get_index(t, n, sample_num):
     return index_x, index_t
 
 
-def load_data(path, sample_num):
+def load_data(path, sample_num, is_evaluate=False):
     data = scipy.io.loadmat(path) #path should include file name
     # star: c, u, v, p, t, x, y
 
@@ -34,6 +34,9 @@ def load_data(path, sample_num):
     x_star = np.tile(x_star, (1, t)) # n * t
     y_star = np.tile(y_star, (1, t)) #n * t
 
+    #测试调用此函数时直接返回
+    if is_evaluate:
+        return c_star, u_star, v_star, p_star, t_star, x_star, y_star
     #获取抽取时空点的索引index
     index_x, index_t = get_index(t, n, sample_num)
     #loss_c参考点获取
