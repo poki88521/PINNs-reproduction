@@ -3,7 +3,14 @@
 - 复现代码的python环境见requirements.txt
 
 ### 内容总结
-1. Maziar R ,Alireza Y ,Em G K .Hidden fluid mechanics: Learning velocity and pressure fields from flow visualizations.[J].Science (New York, N.Y.),2020,367(6481):1026-1030.DOI:10.1126/science.aaw4741. 
+#### 1.Hidden Fluid Mechanics
+- 论文引用：Maziar R ,Alireza Y ,Em G K .Hidden fluid mechanics: Learning velocity and pressure fields from flow visualizations.[J].Science (New York, N.Y.),2020,367(6481):1026-1030.DOI:10.1126/science.aaw4741. 
+- 本论文是PINNs的开篇论文之一，不涉及特殊网络结构，只作为代码复现练习，故暂无特殊总结
+- 但本论文的复现还是涉及很多PINNs特有的代码设计，包括：
+    - 损失函数：不使用ReLU而使用二阶导平滑的Swish
+    - 权重归一化而非批次归一化：防止样本间依赖
+    - 网络深度通常较大来拟合复杂函数
+    - 物理信息嵌入部分采用`torch.autograd.grad`自动计算，同时必须设置`create_graph=True`否则计算不了二阶导
 
 
 ### 日志
@@ -37,6 +44,14 @@
 - 修改代码，在相对l2误差中加入中心化操作
 - 加入评估代码（包含对所有训练快照计算error，绘制颜色对比图）
 
+#### 2026-7-1
+- 进行了模型训练V2.0（包含新的error计算方式）
+- 对模型2.0的最优存档进行评估，效果基本达到复现水平
+- 模型随训练时间的error波动很大，而且p的总体趋势还是升高的
+- 下次计划开始复现下一篇论文
+
+---
+
 ### 日记
 #### 2026-6-20
 - 只看原论文把整个代码重新写出来有点难的离谱了。。。假期真的能把10篇复现完吗。。。
@@ -62,3 +77,8 @@
 - 数据集里面的名字居然是大小写不一样的
 - ds依旧抽风
 - 我怀疑ds的上下文到了，开始卡死了
+
+#### 2026-7-1
+- 目前还没搞明白如何用Pycharm输入命令行参数，这个还得学学（目前都是通过直接改代码来完成的）
+- 家里的台式机的github访问一直有问题，有时间最好修好这个问题，但git已经安装了，争取以后可以只通过github进行设备交互
+- 关于之前的网络对模型结果的影响，目前看来影响不大（我估计压强的预测不是网络结构导致的，因为网络结构大概率会同时影响所有的输出）

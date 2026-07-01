@@ -22,6 +22,7 @@ if __name__ == '__main__':
                         type=str, help='log path')
     args = parser.parse_args()
     #参数设置
+    print(f"version name:{args.version}")
     model_path = args.model_path
     data_path = args.datapath
     log_path = args.log_path
