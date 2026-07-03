@@ -16,6 +16,9 @@
     - PINNs可能不存在完整的数据集（或数据集的完整性无意义），所以迭代数iterations是一个重要的衡量指标
     - 测试点选取绕流稳定的时间中段
 
+#### 2.Improved physics-informed neural network in mitigating gradient-related failures
+- 论文引用：Niu P ,Guo J ,Chen Y , et al.Improved physics-informed neural network in mitigating gradient-related failures[J].Neurocomputing,2025,638130167-130167.DOI:10.1016/J.NEUCOM.2025.130167.
+
 
 ### 日志
 #### 2026-6-18
@@ -53,6 +56,9 @@
 - 对模型2.0的最优存档进行评估，效果基本达到复现水平
 - 模型随训练时间的error波动很大，而且p的总体趋势还是升高的
 - 下次计划开始复现下一篇论文
+
+#### 2026-7-3
+- 下一步计划复现的论文已准备好
 
 ---
 
