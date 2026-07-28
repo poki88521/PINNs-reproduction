@@ -85,6 +85,9 @@
 ### 2026-7-27
 - 调整计划为实现几个无改动的PINNs算例，全部包含在一个文件中
 
+### 2026-7-28
+- 新建一个PINN-examples的项目作为多算例实验项目
+
 
 ## 日记
 ### 2026-6-20
@@ -148,3 +151,29 @@
 - 上完课可以继续弄论文了。。。
 - 一个暂未解决的问题是还不会用命令行给一个python传参数（如果学不会这个可能会考虑直接在文件中修改参数）
 - 目前考虑的一个理想状态是不同的算例可以在一个完整的python项目中进行切换（可以先制作一个框架）~~顺便水github~~
+
+### 2026-7-28
+- 传参数和写.bat的操作基本会了
+- 目前考虑按照ds建议把.yaml作为配置用的文件
+- ds的项目骨架建议：
+```text
+pinn-framework/
+├── configs/                    # YAML 配置（算例、模型、训练参数）
+├── src/
+│   ├── problems/               # 物理问题定义
+│   │   ├── base.py             # 定义 PDE、BC、IC 的接口
+│   │   ├── helmholtz.py        # 继承 base，实现 Helmholtz
+│   │   └── burgers.py          # 后续扩展
+│   ├── models/                 # 网络结构
+│   │   ├── base_net.py         # 标准 FNN（对照组）
+│   │   └── attention_net.py    # 你手里的 Net_attention（创新组）
+│   ├── trainers/               # 训练控制器（关键！）
+│   │   ├── base_trainer.py     # 定义训练、评估、存档接口
+│   │   ├── dde_trainer.py      # 利用 dde 快速实现对照组训练
+│   │   └── custom_trainer.py   # 原生 PyTorch 训练（用于创新算法）
+│   ├── utils/                  # 工具（可视化、日志、存档）
+│   └── main.py                 # 统一入口（解析 YAML + 调度）
+└── runs/                       # 实验存档（模型、日志、图片）
+```
+
+
