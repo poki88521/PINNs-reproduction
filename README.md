@@ -89,6 +89,9 @@
 - 新建一个PINN-examples的项目作为多算例实验项目
 - 基本实现了Helmholtz2D的物理信息部分
 
+### 2026-7-30
+- 实现PINN-Bench的主要框架的Helmholtz部分
+
 
 ## 日记
 ### 2026-6-20
