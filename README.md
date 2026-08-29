@@ -2,6 +2,11 @@
 - 本仓库主要包含复现的PINNs论文
 - 复现代码的python环境见requirements.txt
 
+
+## 说明
+- 这个仓库经历过一些大改，目前复现代码已经全部迁移到[这个项目](https://github.com/poki88521/PINN-bench)了
+- csv数据表格太多太大了，用gitignore屏蔽了（只保留代码、图和模型权重）
+
 ## 内容总结
 ### 1.Hidden Fluid Mechanics
 - 论文引用：Maziar R ,Alireza Y ,Em G K .Hidden fluid mechanics: Learning velocity and pressure fields from flow visualizations.[J].Science (New York, N.Y.),2020,367(6481):1026-1030.DOI:10.1126/science.aaw4741. 
@@ -15,10 +20,26 @@
     - 采样时时间头尾包括边界条件，需要保留且固定
     - PINNs可能不存在完整的数据集（或数据集的完整性无意义），所以迭代数iterations是一个重要的衡量指标
     - 测试点选取绕流稳定的时间中段
+- 总结：开山论文的深化（但还是比2019年那个细化了一些）
 
 ### 2.Improved physics-informed neural network in mitigating gradient-related failures
 - 论文引用：Niu P ,Guo J ,Chen Y , et al.Improved physics-informed neural network in mitigating gradient-related failures[J].Neurocomputing,2025,638130167-130167.DOI:10.1016/J.NEUCOM.2025.130167.
-
+- 一篇很多ai都推荐的论文
+- 加了自适应权重的损失函数：
+$$
+\mathcal{L}(\theta,\boldsymbol{\sigma}) = 
+\frac{1}{\sigma_{ic}^2+\gamma^{-1}}\mathcal{L}_{ic}(\theta) + 
+\frac{1}{\sigma_{bc}^2+\gamma^{-1}}\mathcal{L}_{bc}(\theta) + 
+\frac{1}{\sigma_r^2+\gamma^{-1}}\mathcal{L}_r(\theta)
+$$
+$$
+ + 
+\log(\sigma_{ic}^2+\gamma^{-1}) + 
+\log(\sigma_{bc}^2+\gamma^{-1}) + 
+\log(\sigma_r^2+\gamma^{-1})
+$$
+- 注意力网络：做了两个可学习编码器U、V，把初始数据输入隐藏层，解决梯度消失的同时还可以让网络自动调节关注点
+- 收敛的很快而且没有震荡，很稳定
 
 ## 日志
 ### 2026-6-18
@@ -107,6 +128,19 @@
 
 ### 2026-8-4
 - 加入Allen-Cahn, Wave1D, Heat1D算例并跑通（除Allen-Cahn的数据读取外）
+
+### 2026-8-15
+- 配置了continue CLI并接入deepseek v4 flash作为agent用
+- PINN-bench的基本功能已经基本实现，开始测试拓展
+
+### 2026-8-29
+- 终于完成bench初版，开始跑第二个论文的复现
+- 运行完成，以下记录问题：
+    - loss的损失曲线画的不好，几乎完全呈L型，且和对照组重合很多（尽管这样但是明显看出来比对照组低很多，考虑制作一个包含绝对差值的图？）
+    - 损失分量的pde部分有好几个“尖”（即从1e-12突然变到1e0由突然变回去）观察到在Helmholtz2D_ipinn_components.csv文件的it=17900处前后出现了很多数据突变的情况
+    - sigma减到一个趋近于0的数
+    - 对于间断的地方处理的较为不好（这是神经网络的硬伤？但已经处理的很好了）
+    - AllenCahn处理的不好（x=0处本来有一个极值点但是没有拟合出来，怎么骗过损失函数的？）
 
 
 ## 日记
@@ -206,3 +240,14 @@ pinn-framework/
 - 稳态与瞬态指该问题是否与时间相关。稳态问题不与时间相关而瞬态问题相关。瞬态问题要在考虑边界条件的基础上考虑初始条件
 - 正向与逆向问题指全局物理参数是否是学习出来的。两种问题可以被统一的结构解出来（因为网络只需满足总体符合数据残差和物理残差最小）
 - 椭圆型、双曲型、抛物型都是偏微分方程（PDE）的数学分类。通常认为解决难度椭圆>抛物>双曲
+
+### 2026-8-26
+- 有点受不了python了。。。什么叫类型自己猜。。。什么叫“反射”满天飞。。。
+- 另外这个项目开始规模有点大了，感觉有点难以处理。。。
+
+### 2026-8-29
+- 花了半个多月把这个项目写完，了解了很多对PINN相关内容的概览（或者说是一个整体固定的框架）。比如说损失函数基本都可以写成“方程残差+边界条件+初始条件”这样，比如说稳态问题和瞬态问题的区别，椭圆双曲抛物型方程的区别。也算是弥补了没仔细读PINN开山论文缺的功课吧。
+- 为了写这个项目给电脑接了agent，买了deepseek的token，折腾了相当长一段时间的agent插件（说的就是卡的不能用的continue vscode版）也算是意外收获吧。
+- 写这个项目感受到上一个项目（HFM）的视角其实有些局限（纯流体力学问题、正向问题），现在的视角开阔多了——了解到有不同方面不同难度的问题，所求解的东西也不一样。视角的开拓也得益于了解了deepXDE（dde）。dde作为一个适合于做pinn的包，已经尽可能尝试将所有pinn问题格式化为一个框架，使用dde可以更好的体会“概览”的感觉。
+- 算例侧的问题基本解决，接下来比较缺失的知识是改进侧的。这个只能通过复现不同论文来学，但不知道有没有机会形成一个比较体系化的架构。目前可以体系化的是改进的位置，在整个流程（准备和处理数据——准备模型——训练前处理——训练——训练后处理——评测）中不同地方插入内容或修改其中的部分。
+
