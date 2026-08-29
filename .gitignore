@@ -9,6 +9,10 @@
 .obsidian/
 .idea/
 
+#agent
+scratch/
+prompt.md
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
