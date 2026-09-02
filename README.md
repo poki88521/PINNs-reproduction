@@ -21,7 +21,7 @@ PINNs（物理信息神经网络）有关论文复现（代码、结果与总结
     - 测试点选取绕流稳定的时间中段
 - 总结：开山论文的深化（但还是比2019年那个细化了一些）
 
-### 2.Improved physics-informed neural network in mitigating gradient-related failures
+### 2.Improved-PINN
 论文引用：`Niu P ,Guo J ,Chen Y , et al.Improved physics-informed neural network in mitigating gradient-related failures[J].Neurocomputing,2025,638130167-130167.DOI:10.1016/J.NEUCOM.2025.130167.`
 - 一篇很多ai都推荐的论文
 - 加了自适应权重的损失函数：
@@ -39,6 +39,13 @@ $$
 $$
 - 注意力网络：做了两个可学习编码器U、V，把初始数据输入隐藏层，解决梯度消失的同时还可以让网络自动调节关注点
 - 收敛的很快而且没有震荡，很稳定
+
+### 3.Scale-PINN
+论文引用：`Chiu, P.-H., Wong, J.C., Ooi, C.C., Wei, C., Fan, Y., Ong, Y.-S., 2026. Scale-PINN: Learning Efficient Physics-Informed Neural Networks Through Sequential Correction. https://doi.org/10.48550/arXiv.2602.19475`
+- 目前为止最新的一篇论文，而且成果看起来很突出（代表性问题2分钟以内，精度提高）
+- 加了一个平滑算子
+$$\mathcal{P}_{\alpha} = (I - \alpha^{2} \nabla^{2})$$
+
 
 ## 日志
 - 跳转链接点[这里](log.md)
