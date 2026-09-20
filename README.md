@@ -47,6 +47,18 @@ $$
 $$\mathcal{P}_{\alpha} = (I - \alpha^{2} \nabla^{2})$$
 - 针对流体力学问题有压力约束项，可以和HFM去对比
 
+### 4.KAN-GAT-PINN
+论文引用：`Duanmu, Z., Meng, N., Zhang, Q., Gao, H., Zhou, D., Zheng, C., 2026. A Physics-Informed Kolmogorov–Arnold Graph Attention Network for solid mechanics on arbitrary geometries. Engineering Applications of Artificial Intelligence 181, 115798. https://doi.org/10.1016/j.engappai.2026.115798`
+- 来自导师，解决的非规范几何体的模拟问题，而且还能提升精度（另外直观地感觉它可以读传统有限元的网格，算是两种路径的整合吧？）
+- 整体采用了一个比较复杂的数据流（有图），可以分为以下模块：
+    + 网格转图
+    + KAN网络对V、E分别编码为高维向量V(0), E(0)
+    + KMeans分类并生成虚拟节点和虚拟边，组成多层结构的图
+    + 对每个节点求边消息，注意力，信息聚合并更新节点。各个节点并行。所有节点更新完毕后+1轮，共K轮
+    + 更新后的V(k)（去掉所有虚拟节点和虚拟边）和V(0)、全局信息theta拼接得到Z_final
+    + Z_final放进3个独立的MLP输出位移场
+    + Dirichlet处理边界后用势能最低计算损失，反向传播
+
 
 ## 日志
 - 跳转链接点[这里](log.md)

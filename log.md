@@ -133,3 +133,33 @@ pinn论文复现（不完整）日志，记录当日的操作和更新内容，�
     + 运行一次修改了decay step的iter 40k组看看是否收敛
     + ER=0组（加ER=0的guard）
     + seed=10和seed=20的组
+
+### 2026-9-18
+- 研究pi-gkat中
+- 问题：
+    + 此网络是否受到网格划分的影响？影响程度？
+- 读懂并运行源代码复现tooth结果
+- 运行前需要解决的一些问题：
+    + 环境：台式机需新建 py3.10 环境（本机现有环境均无 jax/flax/optax，jax[cuda12] 需匹配显卡驱动）
+    + jaxkan 不在 README 依赖清单里，且新版已迁到 NNX；models.py 却按 Linen 用 SplineLayer(in,out,grid,k)，需锁定旧版或改写该层
+    + Tooth 是 linear_elastic（论文明确），README 示例写的 hyperelastic 有误
+    + 论文 Tooth 训练 1000 epochs，代码默认 400，需显式指定
+    + 必须在仓库根目录运行（代码内全是相对路径）
+    + ExternalForces 仍指向已改名的 topologyData，靠 sys.modules 缓存侥幸可用，勿单独调用
+    + KAN grid_size=10（论文写 5）；jax_debug_nans=True 常开会拖慢训练，计时前先决定是否关闭
+    + evaluate 必须与训练用相同的 K/n_epochs/lr，否则找不到 pkl
+    + 先跑 10 epochs 标定单步耗时再外推（首轮含编译时间，外推用后半段）
+- ~~找deepseek要了conda环境配置指令：~~现在没有了，先配wsl2
+
+
+### 2026-9-19
+- 运行了上周没跑的实验，组别：
+    + ER = 0, seed = 0 / 10 / 20
+    + ER = 0.45, seed = 0 / 10 / 20
+    + 全部修改了decay_step = max_iter
+- 可能改了学习率调度之后跑的还是太少了，效果反而有的不如上次那个（但还是优于ipinn的）
+- 另外排除了种子对实验效果的影响（种子的影响小于组别的影响）
+- pi-gkat论文需要wsl2的环境才能高效运行，先配wsl2
+
+### 2026-9-20
+- 因论文以及环境隔离需要，在移动硬盘上配置了ubuntu22的linux系统
